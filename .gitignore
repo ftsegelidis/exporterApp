@@ -1,0 +1,9 @@
+target
+.settings
+.project
+.classpath
+*.jar
+*.json
+*.xls
+/**/*.log
+/bin/
