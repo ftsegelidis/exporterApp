@@ -6,13 +6,15 @@ import java.io.FileReader;
 import java.io.IOException;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+
 
 import com.exporter.app.constants.Constants;
 import com.exporter.app.enums.OutputFileType;
 import com.exporter.app.enums.Role;
 import com.exporter.app.exception.ExporterApplicationException;
 import com.exporter.app.exception.ValidationException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * @info Class for Validation
@@ -20,7 +22,7 @@ import com.exporter.app.exception.ValidationException;
  */
 public final class ValidatorUtil {
 
-	public final static Logger logger = Logger.getLogger(ValidatorUtil.class);
+	public final static Logger logger = LogManager.getLogger(ValidatorUtil.class);
 
 	private ValidatorUtil() {
 	}

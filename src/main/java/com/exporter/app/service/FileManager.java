@@ -8,7 +8,8 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.UUID;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.exporter.app.entity.Employee;
 import com.exporter.app.entity.EmployeeFactory;
@@ -25,7 +26,7 @@ import com.exporter.app.util.ValidatorUtil;
  */
 public class FileManager {
 
-	private final static Logger logger = Logger.getLogger(FileManager.class);
+	private final static Logger logger = LogManager.getLogger(FileManager.class);
 	private Scanner scanner;
 
 	public FileManager() {

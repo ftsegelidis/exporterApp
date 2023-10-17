@@ -4,7 +4,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+
 
 import com.exporter.app.constants.Constants;
 import com.exporter.app.entity.Employee;
@@ -13,6 +13,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * @info Uses JSON api to write to json file
@@ -20,7 +22,7 @@ import com.google.gson.JsonParser;
  */
 public class JSONExporter implements Exporter {
 
-	public final static Logger logger = Logger.getLogger(JSONExporter.class);
+	public final static Logger logger = LogManager.getLogger(JSONExporter.class);
 
 	public JSONExporter() {
 	}

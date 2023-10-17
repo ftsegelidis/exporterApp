@@ -5,7 +5,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.output.Format;
@@ -23,7 +24,7 @@ import com.exporter.app.exception.ExporterApplicationException;
  *
  */
 public class XMLExporter implements Exporter {
-	public final static Logger logger = Logger.getLogger(XMLExporter.class);
+	public final static Logger logger = LogManager.getLogger(XMLExporter.class);
 
 	public XMLExporter() {
 	}

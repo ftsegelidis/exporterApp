@@ -5,7 +5,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -16,6 +15,8 @@ import com.exporter.app.entity.Employee;
 import com.exporter.app.entity.Manager;
 import com.exporter.app.entity.Seller;
 import com.exporter.app.exception.ExporterApplicationException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * @info Uses XLS POI api to write to xls file
@@ -23,7 +24,7 @@ import com.exporter.app.exception.ExporterApplicationException;
  */
 public class XLSExporter implements Exporter {
 
-	public final static Logger logger = Logger.getLogger(XLSExporter.class);
+	public final static Logger logger = LogManager.getLogger(XLSExporter.class);
 
 	public XLSExporter() {
 	}

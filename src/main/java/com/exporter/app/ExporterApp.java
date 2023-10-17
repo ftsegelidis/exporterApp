@@ -2,8 +2,6 @@ package com.exporter.app;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
-
 import com.exporter.app.constants.Constants;
 import com.exporter.app.entity.Employee;
 import com.exporter.app.exception.ExporterApplicationException;
@@ -12,6 +10,8 @@ import com.exporter.app.service.Exporter;
 import com.exporter.app.service.ExporterFactory;
 import com.exporter.app.service.FileManager;
 import com.exporter.app.util.ValidatorUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * @info Exporter app takes as input a text (comma separated file) and export
@@ -19,7 +19,7 @@ import com.exporter.app.util.ValidatorUtil;
  *
  */
 public class ExporterApp {
-	public final static Logger logger = Logger.getLogger(ExporterApp.class);
+	public final static Logger logger = LogManager.getLogger(ExporterApp.class);
 
 	/**
 	 * @param args // e.g input.txt , JSON , MANAGER
