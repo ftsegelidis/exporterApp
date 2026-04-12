@@ -11,7 +11,6 @@ import org.apache.commons.lang.StringUtils;
 import com.exporter.app.constants.Constants;
 import com.exporter.app.enums.OutputFileType;
 import com.exporter.app.enums.Role;
-import com.exporter.app.exception.ExporterApplicationException;
 import com.exporter.app.exception.ValidationException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -43,22 +42,16 @@ public final class ValidatorUtil {
 
 	/**
 	 * @param filename
-	 * @throws IOException
-	 * @throws com.exporter.app.exception.ValidationException
-	 *             info checks if input file is empty
-	 * @throws ExporterApplicationException
+	 * @throws ValidationException if the file is empty or cannot be read
 	 */
 	public static final void validateIfInputFileIsEmpty(String filename) throws ValidationException {
 		logger.debug("Method : validateIfInputFileIsEmpty");
-		BufferedReader br = null;
-		try {
-			br = new BufferedReader(new FileReader(filename));
-
+		try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
 			if (br.readLine() == null) {
-				br.close();
+				throw new ValidationException("Input file is empty");
 			}
 		} catch (IOException e) {
-			throw new ValidationException("Could not write target file:" + e.getMessage());
+			throw new ValidationException("Could not read input file: " + e.getMessage());
 		}
 	}
 
@@ -91,7 +84,7 @@ public final class ValidatorUtil {
 	/**
 	 * @param parameters
 	 * @throws ValidationException
-	 * @info checks if the exported file type are valid(JSON,XML,XML)
+	 * @info checks if the exported file type are valid (JSON, XML, XLS)
 	 */
 	public static final void validateExportFileType(String parameters) throws ValidationException {
 		logger.debug("Method : validate export file type, given : "+ parameters);

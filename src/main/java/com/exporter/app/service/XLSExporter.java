@@ -19,7 +19,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * @info Uses XLS POI api to write to xls file
+ * @info Uses Apache POI XSSF to write employee data to an XLSX workbook
  *
  */
 public class XLSExporter implements Exporter {
@@ -30,26 +30,21 @@ public class XLSExporter implements Exporter {
 	}
 
 	/*
-	 * Convert the incoming list to xls object
+	 * Convert the incoming list to an XLSX workbook
 	 */
 	@Override
 	public void export(List<Employee> empValues) throws ExporterApplicationException {
-		logger.debug("xls export");
-		XSSFWorkbook workbook = new XSSFWorkbook();
-		XSSFSheet sheet = workbook.createSheet("Employees");
-		FileOutputStream outputStream = null;
+		logger.debug("xlsx export");
 		int rowCount = 0;
-
-		for (int i = 0; i < empValues.size(); i++) {
-			Row row = sheet.createRow(rowCount++);
-			writeEmployeeInXLSFormat(empValues.get(i), row);
-		}
-
-		try {
-			outputStream = new FileOutputStream(new File(Constants.XLS_OUTPUT));
+		try (XSSFWorkbook workbook = new XSSFWorkbook();
+				FileOutputStream outputStream = new FileOutputStream(new File(Constants.XLS_OUTPUT))) {
+			XSSFSheet sheet = workbook.createSheet("Employees");
+			for (int i = 0; i < empValues.size(); i++) {
+				Row row = sheet.createRow(rowCount++);
+				writeEmployeeInXLSFormat(empValues.get(i), row);
+			}
 			workbook.write(outputStream);
-			workbook.close();
-			logger.info("xls written successfully..");
+			logger.info("xlsx written successfully..");
 		} catch (IOException e) {
 			throw new ExporterApplicationException("Could not write target file:" + e.getMessage());
 		}

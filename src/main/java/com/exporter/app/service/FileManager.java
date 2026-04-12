@@ -1,6 +1,8 @@
 package com.exporter.app.service;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -27,7 +29,6 @@ import com.exporter.app.util.ValidatorUtil;
 public class FileManager {
 
 	private final static Logger logger = LogManager.getLogger(FileManager.class);
-	private Scanner scanner;
 
 	public FileManager() {
 	}
@@ -37,25 +38,25 @@ public class FileManager {
 	 * @param roleType
 	 * @return List<Employee>
 	 * @throws ExporterApplicationException
+	 * @throws ValidationException
 	 * @info Reads from txt file. Check if is manager or seller and fills each
 	 *       list
 	 */
-	public List<Employee> readFromFile(String filename, String roleType) throws ExporterApplicationException {
+	public List<Employee> readFromFile(String filename, String roleType)
+			throws ExporterApplicationException, ValidationException {
 		logger.debug("Reading from txt file....");
 		Path filePath = Paths.get(filename);
-		String currentLine = null;
 		List<Employee> employeeList = new ArrayList<Employee>();
 		EmployeeFactory empFactory = new EmployeeFactory();
-		try {
-			scanner = new Scanner(filePath);
-			while (scanner.hasNext()) {
-				if (scanner.hasNextLine()) {
-					currentLine = scanner.nextLine();
-					String[] elements = currentLine.split(",");
-					ValidatorUtil.validateCommaFieldsLength(currentLine);
-					if (elements[0].equals("")) {
-						elements[0] = String.valueOf(UUID.randomUUID().toString().split("-")[0]);
-					}
+		try (Scanner scanner = new Scanner(Files.newInputStream(filePath), StandardCharsets.UTF_8.name())) {
+			while (scanner.hasNextLine()) {
+				String currentLine = scanner.nextLine();
+				String[] elements = currentLine.split(",", -1);
+				ValidatorUtil.validateCommaFieldsLength(currentLine);
+				if (elements[0].equals("")) {
+					elements[0] = UUID.randomUUID().toString().split("-")[0];
+				}
+				try {
 					if (elements[3].equals(Role.MANAGER.name()) && roleType.equals(Role.MANAGER.name())) {
 						Manager manager = (Manager) empFactory.getEmployee(Role.MANAGER.name(), elements[0],
 								elements[1], elements[2], elements[3], elements[4], elements[5], null, null, null,
@@ -67,14 +68,13 @@ public class FileManager {
 								elements[9]);
 						employeeList.add(seller);
 					}
-				} else {
-					scanner.next();
+				} catch (IllegalArgumentException e) {
+					throw new ExporterApplicationException(
+							"Invalid employee data in line: " + currentLine + " - " + e.getMessage());
 				}
 			}
 		} catch (IOException e) {
-			throw new ExporterApplicationException("Could not read from file" + e.getMessage());
-		} catch (ValidationException ve) {
-			logger.error(ve.getMessage());
+			throw new ExporterApplicationException("Could not read from file: " + e.getMessage());
 		}
 		return employeeList;
 	}
