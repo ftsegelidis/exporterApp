@@ -13,6 +13,6 @@ public class EmployeeFactory {
 			return new Manager(id, firstname, lastname, role, numOfSellers, country);
 		else if (Role.SELLER.name().equals(roleType))
 			return new Seller(id, firstname, lastname, role, productLine, city, averageSales, active);
-		return null;
+		throw new IllegalArgumentException("Unknown role type: " + roleType);
 	}
 }

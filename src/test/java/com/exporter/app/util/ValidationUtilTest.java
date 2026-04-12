@@ -3,6 +3,9 @@ package com.exporter.app.util;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
+import java.io.File;
+import java.io.IOException;
+
 import org.junit.Test;
 
 import com.exporter.app.constants.Constants;
@@ -57,5 +60,12 @@ public class ValidationUtilTest {
 	public void testValidateExportFileTypeException() throws ValidationException {
 		ValidatorUtil.validateExportFileType("OTHER");
 
-	}	
+	}
+
+	@Test(expected = ValidationException.class)
+	public void testValidateIfInputFileIsEmptyThrows() throws ValidationException, IOException {
+		File empty = File.createTempFile("exporter-empty", ".txt");
+		empty.deleteOnExit();
+		ValidatorUtil.validateIfInputFileIsEmpty(empty.getAbsolutePath());
+	}
 }

@@ -12,7 +12,7 @@ import com.exporter.app.exception.ExporterApplicationException;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -36,11 +36,13 @@ public class JSONExporter implements Exporter {
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		try (FileWriter writer = new FileWriter(Constants.JSON_OUTPUT)) {
 			String data = gson.toJson(empValues);
-			JsonArray jsonArray = new JsonParser().parse(data).getAsJsonArray();
+			JsonArray jsonArray = com.google.gson.JsonParser.parseString(data).getAsJsonArray();
 			gson.toJson(jsonArray, writer);
 			logger.info("json written successfully..");
 		} catch (IOException e) {
 			throw new ExporterApplicationException("Could not write target file:" + e.getMessage());
+		} catch (JsonSyntaxException e) {
+			throw new ExporterApplicationException("Could not serialize JSON: " + e.getMessage());
 		}
 	}
 }

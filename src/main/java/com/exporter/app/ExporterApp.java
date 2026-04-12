@@ -40,6 +40,9 @@ public class ExporterApp {
 			// export to file
 			ExporterFactory exporterFactory = new ExporterFactory();
 			Exporter exporter = exporterFactory.getExporter(args[1]);
+			if (exporter == null) {
+				throw new ExporterApplicationException("Unsupported export format: " + args[1]);
+			}
 			exporter.export(employeeList);
 
 			logger.info("Export successfully finished");

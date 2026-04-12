@@ -20,7 +20,7 @@ import com.exporter.app.enums.Role;
 import com.exporter.app.exception.ExporterApplicationException;
 
 /**
- * @info Uses xml JAXB api to write to xml file
+ * @info Uses JDOM to write employee data to an XML file
  *
  */
 public class XMLExporter implements Exporter {
@@ -66,8 +66,8 @@ public class XMLExporter implements Exporter {
 			doc.getRootElement().addContent(employee);
 		}
 		XMLOutputter xmlOutputter = new XMLOutputter(Format.getPrettyFormat());
-		try {
-			xmlOutputter.output(doc, new FileOutputStream(file));
+		try (FileOutputStream out = new FileOutputStream(file)) {
+			xmlOutputter.output(doc, out);
 			logger.info("xml written successfully..");
 		} catch (IOException e) {
 			throw new ExporterApplicationException("Could not write target file:" + e.getMessage());
